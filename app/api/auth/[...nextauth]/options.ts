@@ -5,6 +5,7 @@ export const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
+
       credentials: {
         username: {
           label: "Username:",
