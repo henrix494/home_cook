@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import natan from "@/public/natan.jpg";
+import paula from "@/public/paula.jpg";
 export default function LoginComp() {
   const router = useRouter();
   const [iSclicked, setIsClicked] = useState({
@@ -36,7 +38,7 @@ export default function LoginComp() {
         <div className="flex flex-col items-center gap-10">
           <Image
             className="rounded-full w-[200px] h-[300px] hover:scale-110 transition-all cursor-pointer"
-            src={"/paula.jpg"}
+            src={paula}
             width={200}
             height={200}
             alt="asc"
@@ -65,7 +67,7 @@ export default function LoginComp() {
         <div className="flex flex-col items-center gap-10">
           <Image
             className="rounded-full w-[300px] h-[300px] hover:scale-110 transition-all cursor-pointer"
-            src={"/natan.jpg"}
+            src={natan}
             width={200}
             height={200}
             alt="asc"
