@@ -1,41 +1,44 @@
 "use client";
-import React, { Fragment, useState, useCallback, useMemo } from "react";
-
-import { Calendar, Week, momentLocalizer } from "react-big-calendar";
+import React, { useState, useCallback, useMemo } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-const localizer = momentLocalizer(moment); // or globalizeLocalizer
+import { v4 as uuidv4 } from "uuid"; // Import uuid
+import { useSession } from "next-auth/react";
+import Model from "./Model";
 import "../node_modules/react-big-calendar/lib/css/react-big-calendar.css";
 
+const localizer = momentLocalizer(moment);
+interface Event {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+}
 export default function Table() {
-  const events = [
-    {
-      id: 27,
-      title: "DST starts on this day (Europe)",
-      start: new Date(2023, 2, 26, 0, 0, 0),
-      end: new Date(2023, 2, 26, 4, 30, 0),
-    },
-  ];
-  const [myEvents, setEvents] = useState(events);
-  interface Event {
-    start: Date;
-    end: Date;
+  const [myEvents, setEvents] = useState<Event[]>([]);
+  const { data: session } = useSession();
 
-    // Add other properties as needed
-  }
   const handleSelectSlot = useCallback(
-    ({ start, end }: Event) => {
+    ({ start, end }: any) => {
       const title = window.prompt("New Event name");
       if (title) {
-        setEvents((prev: any) => [...prev, { start, end, title }]);
+        const newEvent = {
+          id: uuidv4(), // Generate a unique ID
+          title,
+          start,
+          end,
+          openUser: session?.user?.name,
+        };
+        setEvents((prev) => [...prev, newEvent]);
       }
     },
     [setEvents]
   );
 
-  const handleSelectEvent = useCallback(
-    (event: any) => window.alert(event.title),
-    []
-  );
+  const handleSelectEvent = (e: any) => {
+    console.log(e);
+    console.log(session);
+  };
 
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
@@ -44,6 +47,7 @@ export default function Table() {
     }),
     []
   );
+
   return (
     <div>
       <div className="h-[500px] max-lg:h-[800px] ">
@@ -57,8 +61,23 @@ export default function Table() {
           selectable
           scrollToTime={scrollToTime}
           longPressThreshold={5}
+          eventPropGetter={(event, start, end, isSelected) => {
+            // Customize the appearance of events based on your requirements
+            return {
+              className:
+                session?.user?.name === "paula"
+                  ? "selected-event"
+                  : "normal-event",
+              style: {
+                backgroundColor:
+                  session?.user?.name === "paula" ? "blue" : "red",
+                // Add any other styles as needed
+              },
+            };
+          }}
         />
       </div>
+      <Model />
     </div>
   );
 }

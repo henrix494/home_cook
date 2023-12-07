@@ -6078,3 +6078,8 @@
     overflow: hidden; /* Hide scrollbars */
   }
 }
+
+.rbc-time-slot {
+  cursor: pointer !important;
+  z-index: 50;
+}

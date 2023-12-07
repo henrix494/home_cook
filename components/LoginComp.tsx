@@ -20,8 +20,8 @@ export default function LoginComp() {
   const { data: session, status } = useSession();
   const handleSignIn = (user: any) => {
     signIn("credentials", {
-      username: `paula`,
-      password: passwords.userOne,
+      username: `natan`,
+      password: passwords.userTwo,
       redirect: false,
     }).then((response) => {
       if (response?.ok) {
