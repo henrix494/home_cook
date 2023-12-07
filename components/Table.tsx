@@ -46,7 +46,7 @@ export default function Table() {
   );
   return (
     <div>
-      <div className="h-[500px]">
+      <div className="h-[500px] max-lg:h-[800px] ">
         <Calendar
           defaultDate={defaultDate}
           defaultView={"week"}
@@ -56,6 +56,7 @@ export default function Table() {
           onSelectSlot={handleSelectSlot}
           selectable
           scrollToTime={scrollToTime}
+          longPressThreshold={5}
         />
       </div>
     </div>
