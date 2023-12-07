@@ -6072,3 +6072,9 @@
   -webkit-animation-delay: 2295ms;
   animation-delay: 2295ms;
 }
+
+@media only screen and (min-width: 600px) {
+  body {
+    overflow: hidden; /* Hide scrollbars */
+  }
+}
