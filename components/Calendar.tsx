@@ -20,25 +20,46 @@ const getData = (props: any) => {
 
 export default function Table({ getProps, data }: any) {
   const [myEvents, setEvents] = useState<Event[]>([]);
-  const [oneEvent, setOneEvent] = useState<Event[]>([]);
   const [title, setTitle] = useState("");
-
   const [openUser, setOpenUser] = useState("paula");
-  const handleSelectSlot = ({ start, end }: any) => {
+
+  const handleSelectSlot = async ({ start, end }: any) => {
     if (title && openUser) {
       const newEvent: any = {
         start,
-        id: uuidv4(), // Generate a unique ID
+        id: uuidv4(),
         title,
         end,
-        openUser: openUser,
+        openUser,
       };
-      setOneEvent(newEvent);
       setEvents((prev) => [...prev, newEvent]);
       getProps(newEvent);
+
+      // Assuming api/getTasks adds the new event to the database
+      await fetch("api/getTasks", {
+        method: "POST", // Adjust the method based on your API
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newEvent),
+      });
+
+      // Fetch the updated data after adding the new event
+      const updatedData = await fetch("api/getTasks", {
+        cache: "reload",
+      });
+      const updatedJson = await updatedData.json();
+      const eventsFromData = updatedJson.data.map((item: any) => ({
+        title: item.title,
+        allDay: false,
+        start: new Date(item.start),
+        end: new Date(item.finsh),
+        openUser: item.openuser,
+        id: item.id,
+      }));
+      setEvents(eventsFromData);
     }
   };
-  const handleSelectEvent = (e: any) => {};
 
   useEffect(() => {
     const eventsFromData = data.map((item: any) => ({
@@ -49,24 +70,9 @@ export default function Table({ getProps, data }: any) {
       openUser: item.openuser,
       id: item.id,
     }));
-    const getOnlineData = async () => {
-      const data = await fetch("api/getTasks", {
-        cache: "reload",
-      });
-      const json = await data.json();
-      const eventsFromData = json.data.map((item: any) => ({
-        title: item.title,
-        allDay: false,
-        start: new Date(item.start),
-        end: new Date(item.finsh),
-        openUser: item.openuser,
-        id: item.id,
-      }));
-      setEvents(eventsFromData);
-    };
 
-    getOnlineData();
-  }, [oneEvent]);
+    setEvents(eventsFromData);
+  }, [data]);
 
   return (
     <div>
@@ -108,7 +114,6 @@ export default function Table({ getProps, data }: any) {
           defaultView={"week"}
           events={myEvents}
           localizer={localizer}
-          onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
           selectable
           longPressThreshold={5}
