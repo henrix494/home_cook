@@ -1,6 +1,11 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import { sql } from "@vercel/postgres";
+interface User {
+  id: string;
+  username: string;
+  password: string;
+}
 export const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -18,16 +23,18 @@ export const options: NextAuthOptions = {
           placeholder: "your-awesome-password",
         },
       },
-      async authorize(credentials) {
-        const user = { id: "42", username: "natan", password: "123456" };
+      async authorize(
+        credentials: Record<"username" | "password", string> | undefined
+      ): Promise<User | null> {
+        const { rows } =
+          await sql`SELECT * FROM users where Name = ${credentials?.username}`;
+        console.log(credentials);
         if (
-          credentials?.username === user.username &&
-          credentials?.password === user.password
+          credentials?.username === rows[0].name &&
+          credentials?.password === rows[0].password
         ) {
-          console.log("true");
-          return user;
+          return rows[0] as User;
         } else {
-          console.log("false");
           return null;
         }
       },

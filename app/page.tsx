@@ -1,10 +1,11 @@
 import NavBar from "@/components/NavBar";
-import Table from "@/components/Table";
-export default function Home() {
+import MainCal from "@/components/MainCal";
+import { sql } from "@vercel/postgres";
+export default async function Home() {
   return (
     <main className=" text-black ">
       <NavBar />
-      <Table />
+      <MainCal />
     </main>
   );
 }

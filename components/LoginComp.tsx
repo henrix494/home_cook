@@ -10,6 +10,8 @@ export default function LoginComp() {
   const [iSclicked, setIsClicked] = useState({
     userOne: false,
     userTwo: false,
+    userNameOne: "",
+    userNameTwo: "",
   });
 
   const [passwords, setPasswords] = useState({
@@ -20,12 +22,13 @@ export default function LoginComp() {
   const { data: session, status } = useSession();
   const handleSignIn = (user: any) => {
     signIn("credentials", {
-      username: `natan`,
-      password: passwords.userTwo,
+      username: iSclicked.userNameOne
+        ? iSclicked.userNameOne
+        : iSclicked.userNameTwo,
+      password: passwords.userOne ? passwords.userOne : passwords.userTwo,
       redirect: false,
     }).then((response) => {
       if (response?.ok) {
-        // Redirect after successful login
         router.push("/");
       }
     });
@@ -46,6 +49,7 @@ export default function LoginComp() {
               setIsClicked((prev) => ({
                 ...prev,
                 userOne: !prev.userOne,
+                userNameOne: "paula",
               }));
             }}
           />
@@ -57,11 +61,22 @@ export default function LoginComp() {
             type="password"
             value={passwords.userOne}
             onChange={(e) =>
-              setPasswords((prev) => ({ ...prev, userOne: e.target.value }))
+              setPasswords((prev) => ({
+                ...prev,
+                userOne: e.target.value,
+                userTwo: "",
+              }))
             }
             disabled={!iSclicked.userOne}
           />
-          <button onClick={() => handleSignIn("One")}>Sign In</button>
+          <button
+            className={`${
+              iSclicked.userOne ? `opacity-1` : "opacity-0"
+            } transition-all`}
+            onClick={() => handleSignIn("One")}
+          >
+            Sign In
+          </button>
         </div>
 
         <div className="flex flex-col items-center gap-10">
@@ -72,7 +87,12 @@ export default function LoginComp() {
             height={200}
             alt="asc"
             onClick={() => {
-              setIsClicked((prev) => ({ ...prev, userTwo: !prev.userTwo }));
+              setIsClicked((prev) => ({
+                ...prev,
+                userTwo: !prev.userTwo,
+                userNameOne: "",
+                userNameTwo: "natan",
+              }));
             }}
           />
           <input
@@ -83,11 +103,22 @@ export default function LoginComp() {
             type="password"
             value={passwords.userTwo}
             onChange={(e) =>
-              setPasswords((prev) => ({ ...prev, userTwo: e.target.value }))
+              setPasswords((prev) => ({
+                ...prev,
+                userTwo: e.target.value,
+                userOne: "",
+              }))
             }
             disabled={!iSclicked.userTwo}
           />
-          <button onClick={() => handleSignIn("Two")}>Sign In</button>
+          <button
+            className={`${
+              iSclicked.userTwo ? `opacity-1` : "opacity-0"
+            } transition-all`}
+            onClick={() => handleSignIn("Two")}
+          >
+            Sign In
+          </button>
         </div>
       </div>
     </div>
