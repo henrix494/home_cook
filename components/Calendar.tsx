@@ -32,22 +32,13 @@ export default function Table({ getProps, data }: any) {
         end,
         openUser,
       };
-      setEvents((prev) => [...prev, newEvent]);
-      getProps(newEvent);
+      await setEvents((prev) => [...prev, newEvent]);
+      await getProps(newEvent);
 
       // Assuming api/getTasks adds the new event to the database
-      await fetch("api/getTasks", {
-        method: "POST", // Adjust the method based on your API
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newEvent),
-      });
 
       // Fetch the updated data after adding the new event
-      const updatedData = await fetch("api/getTasks", {
-        cache: "reload",
-      });
+      const updatedData = await fetch("api/getTasks", { cache: "reload" });
       const updatedJson = await updatedData.json();
       const eventsFromData = updatedJson.data.map((item: any) => ({
         title: item.title,
