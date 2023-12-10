@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
-export const revalidate = 1;
+export const revalidate = 0;
 
 const inter = Inter({ subsets: ["latin"] });
 
