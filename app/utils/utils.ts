@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+export const dynamic = "force-dynamic";
 
 export const getItem = async () => {
   const { rows } = await sql`SELECT * FROM tasks `;
