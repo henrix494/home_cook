@@ -45,6 +45,7 @@ export default function Table({ getProps, data }: any) {
       const updatedData = await fetch("api/getTasks", {
         cache: "no-store",
         signal,
+        next: { revalidate: 0 },
       });
       const updatedJson = await updatedData.json();
 
