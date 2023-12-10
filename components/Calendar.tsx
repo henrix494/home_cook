@@ -33,7 +33,7 @@ export default function Table({ getProps, data }: any) {
         end,
         openUser,
       };
-      setMyLocalEvents((prev) => [...prev, newEvent]);
+
       await setEvents((prev) => [...prev, newEvent]);
       await getProps(newEvent);
 
