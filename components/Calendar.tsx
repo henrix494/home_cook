@@ -43,7 +43,7 @@ export default function Table({ getProps, data }: any) {
 
       // Fetch the updated data after adding the new event
       const updatedData = await fetch("api/getTasks", {
-        cache: "reload",
+        cache: "no-store",
         signal,
       });
       const updatedJson = await updatedData.json();
