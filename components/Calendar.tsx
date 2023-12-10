@@ -23,6 +23,7 @@ export default function Table({ getProps, data }: any) {
   const [myLocalEvent, setMyLocalEvents] = useState<Event[]>([]);
   const [title, setTitle] = useState("");
   const [openUser, setOpenUser] = useState("paula");
+  const { signal } = new AbortController();
 
   const handleSelectSlot = async ({ start, end }: any) => {
     if (title && openUser) {
@@ -40,7 +41,10 @@ export default function Table({ getProps, data }: any) {
       // Assuming api/getTasks adds the new event to the database
 
       // Fetch the updated data after adding the new event
-      const updatedData = await fetch("api/getTasks", { cache: "reload" });
+      const updatedData = await fetch("api/getTasks", {
+        cache: "reload",
+        signal,
+      });
       const updatedJson = await updatedData.json();
 
       const eventsFromData = updatedJson.data.map((item: any) => ({

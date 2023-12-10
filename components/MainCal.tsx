@@ -2,7 +2,7 @@ import React from "react";
 import Table from "./Calendar";
 import { sql } from "@vercel/postgres";
 export const dynamic = "force";
-export const revalidate = 1;
+export const revalidate = 0;
 import { getItem } from "@/app/utils/utils";
 
 export default async function MainCal() {
