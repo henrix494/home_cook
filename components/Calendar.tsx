@@ -4,7 +4,8 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid"; // Import uuid
 import "../node_modules/react-big-calendar/lib/css/react-big-calendar.css";
-
+export const dynamic = "force";
+export const revalidate = 0;
 const localizer = momentLocalizer(moment);
 interface Event {
   id: string;
