@@ -20,6 +20,7 @@ const getData = (props: any) => {
 
 export default function Table({ getProps, data }: any) {
   const [myEvents, setEvents] = useState<Event[]>([]);
+  const [myLocalEvent, setMyLocalEvents] = useState<Event[]>([]);
   const [title, setTitle] = useState("");
   const [openUser, setOpenUser] = useState("paula");
 
@@ -32,6 +33,7 @@ export default function Table({ getProps, data }: any) {
         end,
         openUser,
       };
+      setMyLocalEvents((prev) => [...prev, newEvent]);
       await setEvents((prev) => [...prev, newEvent]);
       await getProps(newEvent);
 
@@ -104,7 +106,7 @@ export default function Table({ getProps, data }: any) {
       <div className="h-[500px] max-lg:h-[800px] ">
         <Calendar
           defaultView={"week"}
-          events={myEvents}
+          events={myLocalEvent && myEvents}
           localizer={localizer}
           onSelectSlot={handleSelectSlot}
           selectable
