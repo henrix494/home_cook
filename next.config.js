@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   headers: () => [
-    { source: "/", headers: [{ key: "Cache-Control", value: "no-store" }] },
+    {
+      source: "https://home-cook-henrix494.vercel.app/",
+      headers: [{ key: "Cache-Control", value: "no-store" }],
+    },
   ],
 };
 
