@@ -106,7 +106,7 @@ export default function Table({ getProps, data }: any) {
       <div className="h-[500px] max-lg:h-[800px] ">
         <Calendar
           defaultView={"week"}
-          events={myLocalEvent && myEvents}
+          events={myEvents}
           localizer={localizer}
           onSelectSlot={handleSelectSlot}
           selectable
